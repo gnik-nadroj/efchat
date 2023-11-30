@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:efrchat/components/chat_bubble.dart';
 import 'package:efrchat/components/custom_text_field.dart';
 import 'package:efrchat/services/chat/chat_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,7 +38,8 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(title: Text(widget.receiverUserEmail)),
       body: Column(children: [
         Expanded(child: _buildMessageList()),
-        _buildMessageInput()
+        _buildMessageInput(),
+        const SizedBox(height: 25),
       ]),
     );
   }
@@ -90,11 +92,18 @@ class _ChatPageState extends State<ChatPage> {
 
     return Container(
       alignment: alignment,
-      child: Column(
-        children: [
-          Text(data['senderEmail']),
-          Text(data['message']),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment:
+          (data['senderId'] == _firebaseAuth.currentUser!.uid) ? CrossAxisAlignment.end: CrossAxisAlignment.start,
+          mainAxisAlignment:
+          (data['senderId'] == _firebaseAuth.currentUser!.uid) ? MainAxisAlignment.end: MainAxisAlignment.start,
+          children: [
+            Text(data['senderEmail']),
+            ChatBubble(message: data['message'])
+          ],
+        ),
       ),
     );
   }
