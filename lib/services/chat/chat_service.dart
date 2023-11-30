@@ -36,7 +36,7 @@ class ChatService extends ChangeNotifier {
   Stream<QuerySnapshot> getMessages(String userId, String otherUserId) {
     List<String> ids = [userId, otherUserId];
     ids.sort();
-    String chatRoomId = ids.join("_");
+    String chatRoomId = ids.join("-");
 
     return _firestore
         .collection('chat_rooms')

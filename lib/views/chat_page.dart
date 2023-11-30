@@ -35,15 +35,10 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.receiverUserEmail)),
-      body: Column(
-        children: [
-          Expanded(
-            child: _buildMessageList()
-          ),
-
-          _buildMessageInput()
-        ]
-      ),
+      body: Column(children: [
+        Expanded(child: _buildMessageList()),
+        _buildMessageInput()
+      ]),
     );
   }
 
@@ -51,38 +46,49 @@ class _ChatPageState extends State<ChatPage> {
     return Row(
       children: [
         Expanded(
-          child: CustomTextField(controller: _messageController, hintText: 'Enter message', obscure: false)
-        ),
-
-        IconButton(onPressed: sendMessage, icon: const Icon(Icons.arrow_upward, size: 40, ))
+            child: CustomTextField(
+                controller: _messageController,
+                hintText: 'Enter message',
+                obscure: false)),
+        IconButton(
+            onPressed: sendMessage,
+            icon: const Icon(
+              Icons.arrow_upward,
+              size: 40,
+            ))
       ],
     );
   }
 
   Widget _buildMessageList() {
     return StreamBuilder(
-      stream: _chatService.getMessages(widget.receiverUserID, _firebaseAuth.currentUser!.uid), 
-      builder:  (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text('error');
-        }
+        stream: _chatService.getMessages(
+            widget.receiverUserID, _firebaseAuth.currentUser!.uid),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text('error');
+          }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('loading');
-        }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text('loading');
+          }
 
-        return ListView(
-          children: snapshot.data!.docs.map((document) => _buildMessageIem(document)).toList(),
-        );
-      });
+          return ListView(
+            children: snapshot.data!.docs
+                .map((document) => _buildMessageIem(document))
+                .toList(),
+          );
+        });
   }
-  
+
   Widget _buildMessageIem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-    var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid) ? Alignment.centerRight : Alignment.centerLeft;
+    var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
+        ? Alignment.centerRight
+        : Alignment.centerLeft;
 
-    return Container (
+    return Container(
       alignment: alignment,
       child: Column(
         children: [
@@ -92,6 +98,4 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-  
-  
 }
