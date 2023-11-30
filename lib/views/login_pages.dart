@@ -1,6 +1,8 @@
 import 'package:efrchat/components/custom_button.dart';
 import 'package:efrchat/components/custom_text_field.dart';
+import 'package:efrchat/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
@@ -14,7 +16,17 @@ class _LoginPageState extends State<LoginPage> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
-  void signIn() {}
+  void signIn() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.signInWithEmailandPassword(
+          emailTextController.text, passwordTextController.text);
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +59,9 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Password',
                   obscure: true),
               const SizedBox(height: 10),
-              CustomButton(onTap: () {}, text: "Sign In"),
+              CustomButton(onTap: signIn, text: "Sign In"),
               const SizedBox(height: 25),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('Not a member ?'),

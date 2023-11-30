@@ -1,6 +1,8 @@
 import 'package:efrchat/components/custom_button.dart';
 import 'package:efrchat/components/custom_text_field.dart';
+import 'package:efrchat/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -14,7 +16,17 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
-  void signUp() {}
+  void signUp() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.signUpWithEmailandPassword(
+          emailTextController.text, passwordTextController.text);
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               const SizedBox(height: 10),
 
-              CustomButton(onTap: (){}, text: "Sign Up"),
+              CustomButton(onTap: signUp, text: "Sign Up"),
 
               const SizedBox(height: 25),
 

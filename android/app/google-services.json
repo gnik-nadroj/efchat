@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "877617356828",
+    "project_id": "efchat-50527",
+    "storage_bucket": "efchat-50527.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877617356828:android:624be7a27e40f6cb8effd9",
+        "android_client_info": {
+          "package_name": "com.example.efrchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7m-c5DJOk7gom0Lr65QXE4JNvOMVD704"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
